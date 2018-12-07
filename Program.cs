@@ -89,9 +89,9 @@ namespace TextGame
         const int Draw = 1;
         const int Win = 2;
         const int Lose = 3;
-        private static void ShowResult(int computerPick, int playerPick)
+        private static void ShowResult(int player1, int player2)
         {
-            var result = GetGameResult(playerPick, computerPick);
+            var result = GetGameResult(player1, player2);
             DrawResultToScreen(result);
         }
 
@@ -124,9 +124,9 @@ namespace TextGame
             }
 
             //Player Win
-            if ((player1 == Paper && player2 == Rock) ||
+            if ( (player1 == Paper    && player2 == Rock)  ||
                  (player1 == Scissors && player2 == Paper) ||
-                 (player1 == Paper && player2 == Scissors))
+                 (player1 == Paper    && player2 == Scissors))
             { 
                 return Win;
             }
