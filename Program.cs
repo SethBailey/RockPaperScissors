@@ -8,8 +8,8 @@ namespace TextGame
         const int Rock = 1;
         const int Paper =2;
         const int Scissors = 3;
-        static int playerscore = 0;
-        static int computerscore = 0;
+        static int player1 = 0;
+        static int player2 = 0;
 
 
         //This is where your program starts
@@ -20,17 +20,42 @@ namespace TextGame
 
         private static void PlayRockPaperScissors()
         {
-            int computerPick = ComputerPickAWeapon();
-            int playerPick = PlayerPickAWeapon();
-            DisplayWinner(computerPick, playerPick);
+            int player2Pick = 0;
+            int player1Pick = 0;
+
+            if ( IsSoloPlayer() )
+            {
+                player1Pick = PlayerPickAWeapon("Player1");
+                player2Pick = ComputerPickAWeapon();
+                DisplaysComputerPick(player2Pick);
+            }
+            else
+            {
+                player1Pick = PlayerPickAWeapon("Player1");
+                player2Pick = PlayerPickAWeapon("Player2"); 
+            }
+            
+            
+            DisplayWinner(player1Pick, player2Pick);
             Displayscorecard();
             PlayAgain();
         }
 
+        private static bool IsSoloPlayer()
+        {
+            Console.Write("Do you want to play solo? (y/n) :");
+            var choice = Console.ReadLine();
+            if (choice == "y")
+            {
+                return true;
+            }
+            return false;
+        }
+
         private static void Displayscorecard()
         {
-            Console.WriteLine("player score: " + playerscore);
-            Console.WriteLine("computer score: " + computerscore);
+            Console.WriteLine("player1 score: " + player1);
+            Console.WriteLine("player2 score: " + player2);
         }
 
         private static void PlayAgain()
@@ -55,39 +80,65 @@ namespace TextGame
 
 
 
-        private static void DisplayWinner(int computerPick, int playerPick)
+        private static void DisplayWinner(int player1Pick, int player2Pick)
         {
-            DisplaysComputerPick(computerPick);
-            ShowResult(computerPick, playerPick);
+            ShowResult(player1Pick, player2Pick);
         }
 
+        const int Draw = 1;
+        const int Win = 2;
+        const int Lose = 3;
         private static void ShowResult(int computerPick, int playerPick)
         {
-            //Draw
-            if (computerPick == playerPick)
+            var result = GetGameResult(playerPick, computerPick);
+            DrawResultToScreen(result);
+        }
+
+        private static void DrawResultToScreen(int result)
+        {
+            if (result == Draw)
             {
                 Console.WriteLine(" draw ");
                 return;
             }
 
             //Player Win
-            if ( (playerPick == Paper && computerPick == Rock  ) ||
-                 (playerPick == Scissors  && computerPick == Paper ) ||
-                 (playerPick == Paper && computerPick == Scissors ) )
+            if (result == Win)
             {
-                playerscore++;
+                player1++;
                 Console.WriteLine(" Win! ");
                 return;
             }
-            
+
             //Player Lose
-            computerscore++;
-            Console.WriteLine(" Lose ");          
+            player2++;
+            Console.WriteLine(" Lose ");
+        }
+
+        //This tells us the result from player1's perspective
+        private static int GetGameResult(int player1, int player2)
+        {   
+            //Draw
+            if (player2 == player1)
+            {
+                return Draw;
+            }
+
+            //Player Win
+            if ((player1 == Paper && player2 == Rock) ||
+                 (player1 == Scissors && player2 == Paper) ||
+                 (player1 == Paper && player2 == Scissors))
+            { 
+                return Win;
+            }
+
+            //Player Lose
+            return Lose;
         }
 
         private static void DisplaysComputerPick(int computerPick)
         {
-            Console.Write("Computer chose : ");
+            Console.Write("Player2 chose : ");
             if (computerPick == Rock)
             {
                 Console.WriteLine("rock");
@@ -102,9 +153,9 @@ namespace TextGame
             }
         }
 
-        private static int PlayerPickAWeapon()
+        private static int PlayerPickAWeapon(string playerName)
         {
-            Console.Write("Pick a weapon (r,p,s) : ");
+            Console.Write( playerName + " Pick a weapon (r,p,s) : ");
             var input = Console.ReadLine();
             if (input == "r")
             {
@@ -119,8 +170,8 @@ namespace TextGame
                return Scissors; 
             }
 
-            Console.WriteLine("You picked the wrong letter...try again");
-            return PlayerPickAWeapon();
+            Console.WriteLine(playerName + " picked the wrong letter...try again");
+            return PlayerPickAWeapon(playerName);
         }
           
        
