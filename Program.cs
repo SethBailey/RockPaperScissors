@@ -8,8 +8,8 @@ namespace TextGame
         const int Rock = 1;
         const int Paper =2;
         const int Scissors = 3;
-        static int player1 = 0;
-        static int player2 = 0;
+        static int player1Score = 0;
+        static int player2Score = 0;
 
 
         //This is where your program starts
@@ -18,12 +18,22 @@ namespace TextGame
             PlayRockPaperScissors();
         }
 
+        static bool wasLastGameSolo = true;
+
         private static void PlayRockPaperScissors()
         {
             int player2Pick = 0;
             int player1Pick = 0;
 
-            if ( IsSoloPlayer() )
+            var isNewGameSolo = IsSoloPlayer();
+            if ( isNewGameSolo != wasLastGameSolo )
+            {
+                player1Score = 0;
+                player2Score = 0;
+            }
+            wasLastGameSolo = isNewGameSolo;
+
+            if ( wasLastGameSolo )
             {
                 player1Pick = PlayerPickAWeapon("Player1");
                 player2Pick = ComputerPickAWeapon();
@@ -55,8 +65,8 @@ namespace TextGame
 
         private static void Displayscorecard()
         {
-            Console.WriteLine("player1 score: " + player1);
-            Console.WriteLine("player2 score: " + player2);
+            Console.WriteLine("player1 score: " + player1Score);
+            Console.WriteLine("player2 score: " + player2Score);
         }
 
         private static void PlayAgain()
@@ -105,12 +115,12 @@ namespace TextGame
 
             if (result == Win)
             {
-                player1++;
+                player1Score++;
                 Console.WriteLine("Player1 Win! ");
                 return;
             }
 
-            player2++;
+            player2Score++;
             Console.WriteLine("Player2 Win! ");
         }
 
