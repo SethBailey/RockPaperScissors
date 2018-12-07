@@ -16,10 +16,28 @@ namespace TextGame
         static void Main(string[] args)
         {
             isSoloGame = IsSoloPlayer();
+            GetPlayerNames();
             PlayRockPaperScissors();
         }
 
+        private static void GetPlayerNames()
+        {
+            Player1 = GetPlayerName();
+            if (!isSoloGame)
+            {
+                Player2 = GetPlayerName();
+            }
+        }
+
+        private static string GetPlayerName()
+        {
+            Console.Write("What is your name? : ");
+            return Console.ReadLine();
+        }
+
         static bool isSoloGame = true;
+        static string Player1 = "Player1";
+        static string Player2 = "Computer";
 
         private static void PlayRockPaperScissors()
         {
@@ -28,17 +46,17 @@ namespace TextGame
             
             if ( isSoloGame )
             {
-                player1Pick = PlayerPickAWeapon("Player1");
+                player1Pick = PlayerPickAWeapon(Player1);
                 player2Pick = ComputerPickAWeapon();
             }
             else
             {
-                player1Pick = PlayerPickAWeapon("Player1");
-                player2Pick = PlayerPickAWeapon("Player2"); 
+                player1Pick = PlayerPickAWeapon(Player1);
+                player2Pick = PlayerPickAWeapon(Player2); 
             }
             
-            DisplayPick("Player1", player1Pick);
-            DisplayPick("Player2", player2Pick);
+            DisplayPick(Player1, player1Pick);
+            DisplayPick(Player2, player2Pick);
             
             DisplayWinner(player1Pick, player2Pick);
             Displayscorecard();
@@ -58,8 +76,8 @@ namespace TextGame
 
         private static void Displayscorecard()
         {
-            Console.WriteLine("player1 score: " + player1Score);
-            Console.WriteLine("player2 score: " + player2Score);
+            Console.WriteLine(Player1 + "score: " + player1Score);
+            Console.WriteLine(Player2 + "score: " + player2Score);
         }
 
         private static void PlayAgain()
@@ -110,12 +128,12 @@ namespace TextGame
             if (result == Win)
             {
                 player1Score++;
-                Console.WriteLine("Player1 Win! ");
+                Console.WriteLine(Player1 + " Win! ");
                 return;
             }
 
             player2Score++;
-            Console.WriteLine("Player2 Win! ");
+            Console.WriteLine(Player2 + " Win! ");
         }
 
         //This tells us the result from player1's perspective
