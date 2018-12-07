@@ -68,6 +68,7 @@ namespace TextGame
             var playAgain = Console.ReadLine();
             if (playAgain == "y")
             {
+                Console.Clear();
                 PlayRockPaperScissors();
             }
             else if (playAgain == "n")
