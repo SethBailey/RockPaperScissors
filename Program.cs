@@ -15,25 +15,18 @@ namespace TextGame
         //This is where your program starts
         static void Main(string[] args)
         {
+            isSoloGame = IsSoloPlayer();
             PlayRockPaperScissors();
         }
 
-        static bool wasLastGameSolo = true;
+        static bool isSoloGame = true;
 
         private static void PlayRockPaperScissors()
         {
             int player2Pick = 0;
             int player1Pick = 0;
-
-            var isNewGameSolo = IsSoloPlayer();
-            if ( isNewGameSolo != wasLastGameSolo )
-            {
-                player1Score = 0;
-                player2Score = 0;
-            }
-            wasLastGameSolo = isNewGameSolo;
-
-            if ( wasLastGameSolo )
+            
+            if ( isSoloGame )
             {
                 player1Pick = PlayerPickAWeapon("Player1");
                 player2Pick = ComputerPickAWeapon();
