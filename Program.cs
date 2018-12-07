@@ -148,7 +148,7 @@ namespace TextGame
             //Player Win
             if ( (player1 == Paper    && player2 == Rock)  ||
                  (player1 == Scissors && player2 == Paper) ||
-                 (player1 == Paper    && player2 == Scissors))
+                 (player1 == Rock     && player2 == Scissors))
             { 
                 return Win;
             }
