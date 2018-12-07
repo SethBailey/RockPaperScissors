@@ -27,7 +27,6 @@ namespace TextGame
             {
                 player1Pick = PlayerPickAWeapon("Player1");
                 player2Pick = ComputerPickAWeapon();
-                DisplaysComputerPick(player2Pick);
             }
             else
             {
@@ -35,6 +34,8 @@ namespace TextGame
                 player2Pick = PlayerPickAWeapon("Player2"); 
             }
             
+            DisplayPick("Player1", player1Pick);
+            DisplayPick("Player2", player2Pick);
             
             DisplayWinner(player1Pick, player2Pick);
             Displayscorecard();
@@ -98,21 +99,19 @@ namespace TextGame
         {
             if (result == Draw)
             {
-                Console.WriteLine(" draw ");
+                Console.WriteLine("Draw ");
                 return;
             }
 
-            //Player Win
             if (result == Win)
             {
                 player1++;
-                Console.WriteLine(" Win! ");
+                Console.WriteLine("Player1 Win! ");
                 return;
             }
 
-            //Player Lose
             player2++;
-            Console.WriteLine(" Lose ");
+            Console.WriteLine("Player2 Win! ");
         }
 
         //This tells us the result from player1's perspective
@@ -136,18 +135,18 @@ namespace TextGame
             return Lose;
         }
 
-        private static void DisplaysComputerPick(int computerPick)
+        private static void DisplayPick(string player, int pick)
         {
-            Console.Write("Player2 chose : ");
-            if (computerPick == Rock)
+            Console.Write(player + " chose : ");
+            if (pick == Rock)
             {
                 Console.WriteLine("rock");
             }
-            else if (computerPick == Paper)
+            else if (pick == Paper)
             {
                 Console.WriteLine("paper");
             }
-            else if (computerPick == Scissors)
+            else if (pick == Scissors)
             {
                 Console.WriteLine("scissors");
             }
@@ -156,16 +155,17 @@ namespace TextGame
         private static int PlayerPickAWeapon(string playerName)
         {
             Console.Write( playerName + " Pick a weapon (r,p,s) : ");
-            var input = Console.ReadLine();
-            if (input == "r")
+            var input = Console.ReadKey(true);
+            Console.WriteLine();
+            if (input.Key == ConsoleKey.R)
             {
                 return Rock;
             }
-            if (input == "p")
+            if (input.Key == ConsoleKey.P)
             {
                 return Paper;
             }
-            if (input == "s")
+            if (input.Key == ConsoleKey.S)
             {
                return Scissors; 
             }
