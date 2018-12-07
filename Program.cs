@@ -41,12 +41,17 @@ namespace TextGame
             {
                 PlayRockPaperScissors();
             }
-            else
+            else if (playAgain == "n")
             {
                 Console.WriteLine("Bye bye");
             }
-            
+            else 
+            {
+               Console.WriteLine("I don't get it try again: "); 
+               PlayAgain();
+            }
         }
+
 
 
 
