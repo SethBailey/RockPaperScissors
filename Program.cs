@@ -2,18 +2,23 @@
 
 namespace TextGame
 {
-    class Start
-    {
-        
-        enum Weapon {
+    enum Result{
+
+         Draw,
+         Win,
+         Lose 
+    };
+
+    public enum Weapon {
             Rock,
             Paper,
             Scissors
-        };
+    };
 
-        static int player1Score = 0;
-        static int player2Score = 0;
-
+    class Start
+    {        
+        static Scoreboard scoreboard = new Scoreboard();
+        static RockPaperScissorsLogic logic = new RockPaperScissorsLogic();
 
         //This is where your program starts
         static void Main(string[] args)
@@ -62,7 +67,7 @@ namespace TextGame
             DisplayPick(Player2Name, player2Pick);
             
             ShowResult(player1Pick, player2Pick);
-            Displayscorecard();
+            scoreboard.Displayscorecard(Player1Name, Player2Name);
             PlayAgain();
         }
 
@@ -77,11 +82,6 @@ namespace TextGame
             return false;
         }
 
-        private static void Displayscorecard()
-        {
-            Console.WriteLine(Player1Name + "score: " + player1Score);
-            Console.WriteLine(Player2Name + "score: " + player2Score);
-        }
 
         private static void PlayAgain()
         {
@@ -104,16 +104,10 @@ namespace TextGame
             }
         }
 
-        enum Result{
-
-         Draw,
-         Win,
-         Lose 
-
-        }
         private static void ShowResult(Weapon player1, Weapon player2)
         {
-            var result = GetGameResult(player1, player2);
+            var result = logic.GetGameResult(player1, player2);
+            scoreboard.UpdateResult(result);
             DrawResultToScreen(result);
         }
 
@@ -127,35 +121,12 @@ namespace TextGame
 
             if (result == Result.Win)
             {
-                player1Score++;
                 Console.WriteLine(Player1Name + " Win! ");
                 return;
             }
-
-            player2Score++;
             Console.WriteLine(Player2Name + " Win! ");
         }
 
-        //This tells us the result from player1's perspective
-        private static Result GetGameResult(Weapon player1, Weapon player2)
-        {   
-            //Draw
-            if (player2 == player1)
-            {
-                return Result.Draw;
-            }
-
-            //Player Win
-            if ( (player1 == Weapon.Paper    && player2 == Weapon.Rock)  ||
-                 (player1 == Weapon.Scissors && player2 == Weapon.Paper) ||
-                 (player1 == Weapon.Rock     && player2 == Weapon.Scissors))
-            { 
-                return Result.Win;
-            }
-
-            //Player Lose
-            return Result.Lose;
-        }
 
         private static void DisplayPick(string player, Weapon pick)
         {
@@ -187,18 +158,7 @@ namespace TextGame
        
         private static Weapon ComputerPickAWeapon()
         {
-            var x = new Random();
-            var randomNumber =  x.Next(1,3);
-            switch(randomNumber)
-            {
-                case 1 : return Weapon.Rock;
-                case 2 : return Weapon.Paper;
-                case 3 : return Weapon.Scissors;
-
-                //have to return something to make the compiler happy
-                //this code will NEVER execute!
-                default : return Weapon.Scissors;
-            }
+           return logic.RandomlyPickAWeapon();
         }
 
 
