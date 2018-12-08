@@ -61,7 +61,7 @@ namespace TextGame
             DisplayPick(Player1Name, player1Pick);
             DisplayPick(Player2Name, player2Pick);
             
-            DisplayWinner(player1Pick, player2Pick);
+            ShowResult(player1Pick, player2Pick);
             Displayscorecard();
             PlayAgain();
         }
@@ -104,13 +104,6 @@ namespace TextGame
             }
         }
 
-
-
-
-        private static void DisplayWinner(Weapon player1Pick, Weapon player2Pick)
-        {
-            ShowResult(player1Pick, player2Pick);
-        }
         enum Result{
 
          Draw,
