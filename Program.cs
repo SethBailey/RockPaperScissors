@@ -87,6 +87,7 @@ namespace TextGame
         {
             Console.Write("Continue? (y,n) ");
             var playAgain = Console.ReadLine();
+             
             if (playAgain == "y")
             {
                 Console.Clear();
@@ -166,17 +167,11 @@ namespace TextGame
         private static void DisplayPick(string player, Weapon pick)
         {
             Console.Write(player + " chose : ");
-            if (pick == Weapon.Rock)
+            switch (pick)
             {
-                Console.WriteLine("rock");
-            }
-            else if (pick == Weapon.Paper)
-            {
-                Console.WriteLine("paper");
-            }
-            else if (pick == Weapon.Scissors)
-            {
-                Console.WriteLine("scissors");
+                case Weapon.Rock: Console.WriteLine("rock"); break;
+                case Weapon.Paper: Console.WriteLine("paper"); break; 
+                case Weapon.Scissors: Console.WriteLine("scissors"); break;
             }
         }
 
@@ -185,21 +180,15 @@ namespace TextGame
             Console.Write( playerName + " Pick a weapon (r,p,s) : ");
             var input = Console.ReadKey(true);
             Console.WriteLine();
-            if (input.Key == ConsoleKey.R)
+            switch ( input.Key )
             {
-                return Weapon.Rock;
+                case ConsoleKey.R : return Weapon.Rock;
+                case ConsoleKey.P : return Weapon.Paper;
+                case ConsoleKey.S : return Weapon.Scissors;
+                default:           
+                    Console.WriteLine(playerName + " picked the wrong letter...try again");
+                    return PlayerPickAWeapon(playerName);
             }
-            if (input.Key == ConsoleKey.P)
-            {
-                return Weapon.Paper;
-            }            
-            if (input.Key == ConsoleKey.S)
-            {
-               return Weapon.Scissors; 
-            }
-
-            Console.WriteLine(playerName + " picked the wrong letter...try again");
-            return PlayerPickAWeapon(playerName);
         }
           
        
