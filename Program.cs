@@ -5,9 +5,12 @@ namespace TextGame
     class Start
     {
         
-        const int Rock = 1;
-        const int Paper =2;
-        const int Scissors = 3;
+        enum Weapon {
+            Rock,
+            Paper,
+            Scissors
+        };
+
         static int player1Score = 0;
         static int player2Score = 0;
 
@@ -22,10 +25,10 @@ namespace TextGame
 
         private static void GetPlayerNames()
         {
-            Player1 = GetPlayerName();
+            Player1Name = GetPlayerName();
             if (!isSoloGame)
             {
-                Player2 = GetPlayerName();
+                Player2Name = GetPlayerName();
             }
         }
 
@@ -36,27 +39,27 @@ namespace TextGame
         }
 
         static bool isSoloGame = true;
-        static string Player1 = "Player1";
-        static string Player2 = "Computer";
+        static string Player1Name = "Player1";
+        static string Player2Name = "Computer";
 
         private static void PlayRockPaperScissors()
         {
-            int player2Pick = 0;
-            int player1Pick = 0;
+            Weapon player2Pick;
+            Weapon player1Pick;
             
             if ( isSoloGame )
             {
-                player1Pick = PlayerPickAWeapon(Player1);
+                player1Pick = PlayerPickAWeapon(Player1Name);
                 player2Pick = ComputerPickAWeapon();
             }
             else
             {
-                player1Pick = PlayerPickAWeapon(Player1);
-                player2Pick = PlayerPickAWeapon(Player2); 
+                player1Pick = PlayerPickAWeapon(Player1Name);
+                player2Pick = PlayerPickAWeapon(Player2Name); 
             }
             
-            DisplayPick(Player1, player1Pick);
-            DisplayPick(Player2, player2Pick);
+            DisplayPick(Player1Name, player1Pick);
+            DisplayPick(Player2Name, player2Pick);
             
             DisplayWinner(player1Pick, player2Pick);
             Displayscorecard();
@@ -76,8 +79,8 @@ namespace TextGame
 
         private static void Displayscorecard()
         {
-            Console.WriteLine(Player1 + "score: " + player1Score);
-            Console.WriteLine(Player2 + "score: " + player2Score);
+            Console.WriteLine(Player1Name + "score: " + player1Score);
+            Console.WriteLine(Player2Name + "score: " + player2Score);
         }
 
         private static void PlayAgain()
@@ -103,93 +106,96 @@ namespace TextGame
 
 
 
-        private static void DisplayWinner(int player1Pick, int player2Pick)
+        private static void DisplayWinner(Weapon player1Pick, Weapon player2Pick)
         {
             ShowResult(player1Pick, player2Pick);
         }
+        enum Result{
 
-        const int Draw = 1;
-        const int Win = 2;
-        const int Lose = 3;
-        private static void ShowResult(int player1, int player2)
+         Draw,
+         Win,
+         Lose 
+
+        }
+        private static void ShowResult(Weapon player1, Weapon player2)
         {
             var result = GetGameResult(player1, player2);
             DrawResultToScreen(result);
         }
 
-        private static void DrawResultToScreen(int result)
+        private static void DrawResultToScreen(Result result)
         {
-            if (result == Draw)
+            if (result == Result.Draw)
             {
                 Console.WriteLine("Draw ");
                 return;
             }
 
-            if (result == Win)
+            if (result == Result.Win)
             {
                 player1Score++;
-                Console.WriteLine(Player1 + " Win! ");
+                Console.WriteLine(Player1Name + " Win! ");
                 return;
             }
 
             player2Score++;
-            Console.WriteLine(Player2 + " Win! ");
+            Console.WriteLine(Player2Name + " Win! ");
         }
 
         //This tells us the result from player1's perspective
-        private static int GetGameResult(int player1, int player2)
+        private static Result GetGameResult(Weapon player1, Weapon player2)
         {   
             //Draw
             if (player2 == player1)
             {
-                return Draw;
+                return Result.Draw;
             }
 
             //Player Win
-            if ( (player1 == Paper    && player2 == Rock)  ||
-                 (player1 == Scissors && player2 == Paper) ||
-                 (player1 == Rock     && player2 == Scissors))
+            if ( (player1 == Weapon.Paper    && player2 == Weapon.Rock)  ||
+                 (player1 == Weapon.Scissors && player2 == Weapon.Paper) ||
+                 (player1 == Weapon.Rock     && player2 == Weapon.Scissors))
             { 
-                return Win;
+                return Result.Win;
             }
 
             //Player Lose
-            return Lose;
+            return Result.Lose;
         }
 
-        private static void DisplayPick(string player, int pick)
+        private static void DisplayPick(string player, Weapon pick)
         {
             Console.Write(player + " chose : ");
-            if (pick == Rock)
+            if (pick == Weapon.Rock)
             {
                 Console.WriteLine("rock");
             }
-            else if (pick == Paper)
+            else if (pick == Weapon.Paper)
             {
                 Console.WriteLine("paper");
             }
-            else if (pick == Scissors)
+            else if (pick == Weapon.Scissors)
             {
                 Console.WriteLine("scissors");
             }
         }
 
-        private static int PlayerPickAWeapon(string playerName)
+        private static Weapon PlayerPickAWeapon(string playerName)
         {
             Console.Write( playerName + " Pick a weapon (r,p,s) : ");
             var input = Console.ReadKey(true);
             Console.WriteLine();
             if (input.Key == ConsoleKey.R)
             {
-                return Rock;
+                return Weapon.Rock;
             }
             if (input.Key == ConsoleKey.P)
             {
-                return Paper;
-            }
+                return Weapon.Paper;
+            }            
             if (input.Key == ConsoleKey.S)
             {
-               return Scissors; 
+               return Weapon.Scissors; 
             }
 
             Console.WriteLine(playerName + " picked the wrong letter...try again");
@@ -197,10 +203,20 @@ namespace TextGame
         }
           
        
-        private static int ComputerPickAWeapon()
+        private static Weapon ComputerPickAWeapon()
         {
             var x = new Random();
-            return x.Next(1,3);
+            var randomNumber =  x.Next(1,3);
+            switch(randomNumber)
+            {
+                case 1 : return Weapon.Rock;
+                case 2 : return Weapon.Paper;
+                case 3 : return Weapon.Scissors;
+
+                //have to return something to make the compiler happy
+                //this code will NEVER execute!
+                default : return Weapon.Scissors;
+            }
         }
 
 
